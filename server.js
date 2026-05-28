@@ -17,6 +17,7 @@ require("./config/passport.js");
 
 const userRouter = require("./routes/user.js");
 const postRouter = require("./routes/post.js");
+const commRouter = require("./routes/comment.js");
 
 
 //session
@@ -53,6 +54,7 @@ app.get("/",(req,res)=>{
 //routes
 app.use("/",userRouter);
 app.use("/posts",postRouter);
+app.use("/posts/:id/comments",commRouter);
 
 //port 8080
  app.listen(PORT,()=>{

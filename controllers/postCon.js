@@ -1,5 +1,9 @@
 const Post = require("../models/post.js");
 
+const {validationResult} = require("express-validator");
+
+
+
 //read
 module.exports.allPosts = async(req,res)=>{
     try{
@@ -12,6 +16,10 @@ module.exports.allPosts = async(req,res)=>{
 
 //create
 module.exports.createPost = async(req,res)=>{
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(400).json({errors:errors.array()});
+    }
     try{
         const {title,content} = req.body;
         const post = new Post({
@@ -26,6 +34,7 @@ module.exports.createPost = async(req,res)=>{
     }
 
 };
+
 //put
 module.exports.editPost = async(req,res)=>{
     try{
