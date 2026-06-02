@@ -1,33 +1,25 @@
 const express = require('express');
 const router = express.Router();
-const User = require("../models/user.js")
-const passport = require("passport");
+const {body} = require("express-validator")
+const authCon = require("../controllers/authCon");
+
 
 router.get("/signup", (req,res) => {
     res.send('Signup route working');
 });
 
-router.post("/signup", async(req,res)=>{
-    try{
-    let{username,email,password}=req.body;
-    const newUser = new User({email,username});
-    const registeredUser = await User.register(newUser, password);
-    console.log(registeredUser);
-    res.send("User Registered")
-    // res.redirect('/posts');
-    }catch(err){
-        console.log(err);
-        res.status(500).send("Error Signing up");
-    }
-});
+router.post("/signup",
+    [
+        body("username").notEmpty().withMessage("Username required"),
+        body("password").isLength({min:8}).withMessage("Password Should be atleast 8 characters long")
+    ],
+    authCon.signup
+);
 
 router.get("/login",(req,res)=>{
     res.send("login route working")
 })
 
-router.post("/login",passport.authenticate("local",{failureRedirect: '/login'}), async(req,res)=>{
-    res.send("Welcome to Knots");
-    // res.redirect("/posts")
-});
+router.post("/login",authCon.login);
 
  module.exports = router;

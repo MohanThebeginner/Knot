@@ -3,7 +3,7 @@ const router = express.Router();
 
 const {isLoggedIn} = require("../middleware/auth.js");
 const postCtrl = require("../controllers/postCon.js");
-
+const {upload} = require("../config/cloudinary.js")
 const {body} = require("express-validator");
 const validate = [
     body("title").notEmpty().withMessage("Title is required"),
@@ -12,9 +12,9 @@ const validate = [
 
 router.get("/",isLoggedIn,postCtrl.allPosts);
 
-router.post("/",isLoggedIn,validate,postCtrl.createPost);
+router.post("/",isLoggedIn,upload.single("image"),validate,postCtrl.createPost);
 
-router.put("/:id",isLoggedIn,postCtrl.editPost);
+router.put("/:id",isLoggedIn,upload.single("image"),postCtrl.editPost);
 
 router.delete("/:id",isLoggedIn,postCtrl.deletePost);
 

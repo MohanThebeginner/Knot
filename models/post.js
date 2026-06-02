@@ -8,6 +8,10 @@ const postSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:"User",
         required:true
+    },
+    image:{
+        url : {type:String},
+        publicId: {type:String}
     }
 },
 {
