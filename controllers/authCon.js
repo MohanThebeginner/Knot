@@ -8,6 +8,9 @@ module.exports.signup = async(req,res,next) => {
         const existing = await User.findOne({username});
         if(existing) return res.status(400).json({error:"Username already taken"});
 
+        const existingEmail = await User.findOne({email});
+        if(existingEmail) return res.status(400).json({error:"Email alredy Existing"});
+
         const user = new User({username,password,email});
         await user.save();
 

@@ -9,13 +9,12 @@ const multer = require("multer");
 require("dotenv").config();
 const PORT = process.env.PORT;
 const MONGO_URI =process.env.MONGO_URI;
-const SESSION_SECRET = process.env.SESSION_SECRET;
-
 
 const userRouter = require("./routes/user.js");
 const postRouter = require("./routes/post.js");
 const commRouter = require("./routes/comment.js");
 
+const {limiter,authLimiter} = require("./middleware/rateLimiter");
 
 app.use(express.json());
 
@@ -38,6 +37,9 @@ main()
 async function main() {
   await mongoose.connect(MONGO_URI);
 }
+
+//ratelimiter
+app.use(limiter);
  
 //root
 app.get("/",(req,res)=>{

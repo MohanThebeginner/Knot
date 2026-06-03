@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {body} = require("express-validator")
 const authCon = require("../controllers/authCon");
+const {authLimiter} = require("../middleware/rateLimiter");
 
 
 router.get("/signup", (req,res) => {
@@ -9,9 +10,11 @@ router.get("/signup", (req,res) => {
 });
 
 router.post("/signup",
+    authLimiter,
     [
-        body("username").notEmpty().withMessage("Username required"),
-        body("password").isLength({min:8}).withMessage("Password Should be atleast 8 characters long")
+        body("username").notEmpty().isLength({max:30}).withMessage("Username required and should be max 30 characters"),
+        body("password").isLength({min:8}).withMessage("Password Should be atleast 8 characters long"),
+        body("email").isEmail().withMessage("Enter a vaild email")
     ],
     authCon.signup
 );
@@ -20,6 +23,12 @@ router.get("/login",(req,res)=>{
     res.send("login route working")
 })
 
-router.post("/login",authCon.login);
+router.post("/login",
+    authLimiter,
+    [
+        body("username").notEmpty().withMessage("Username required"),
+        body("password").notEmpty().withMessage("Password required")
+    ],
+    authCon.login);
 
  module.exports = router;

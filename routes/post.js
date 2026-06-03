@@ -10,7 +10,7 @@ const validate = [
     body("content").isLength({min: 10}).withMessage("Content is too short")
 ]
 
-router.get("/",isLoggedIn,postCtrl.allPosts);
+router.get("/",postCtrl.allPosts);
 
 router.post("/",isLoggedIn,upload.single("image"),validate,postCtrl.createPost);
 
