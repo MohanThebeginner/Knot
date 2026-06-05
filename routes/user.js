@@ -31,4 +31,8 @@ router.post("/login",
     ],
     authCon.login);
 
+router.get("/verify", authCon.verifyEmail);
+router.post("/forget-password",authCon.forgetPassword);
+router.post("/reset-password",authCon.resetPassword);
+
  module.exports = router;

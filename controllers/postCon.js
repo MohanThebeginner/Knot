@@ -21,9 +21,16 @@ module.exports.allPosts = async(req,res,next)=>{
         .skip(skip)
         .limit(limit);
 
+        // Add like info for current user
+        const postsWithLikes = posts.map(post => ({
+            ...post.toObject(),
+            likeCount: post.likes?.length || 0,
+            isLiked: req.user && post.likes ? post.likes.includes(req.user._id) : false
+        }));
+
         const total = await Post.countDocuments();
 
-        res.json({posts, currentPage: page , totalPage: Math.ceil(total/limit), totalPost: total });
+        res.json({posts: postsWithLikes, currentPage: page , totalPage: Math.ceil(total/limit), totalPost: total });
     }catch(err){
         next(err);
     }
@@ -106,6 +113,53 @@ module.exports.deletePost = async(req,res,next)=>{
         await post.deleteOne();
         res.json({message:"Post deleted"});
     }catch(err){
+        next(err);
+    }
+};
+
+
+//toggle like post
+module.exports.toggleLike = async (req, res, next) => {
+    try {
+        const post = await Post.findById(req.params.id);
+        if (!post) return res.status(404).json({ error: "Post not found" });
+
+        // Initialize likes array if it doesn't exist
+        if (!post.likes) {
+            post.likes = [];
+        }
+
+        const alreadyLiked = post.likes.includes(req.user._id);
+
+        if (alreadyLiked) {
+            post.likes.pull(req.user._id); // unlike
+        } else {
+            post.likes.push(req.user._id); // like
+        }
+
+        await post.save();
+        res.json({ 
+            likes: post.likes.length, 
+            liked: !alreadyLiked,
+            message: alreadyLiked ? "Post unliked" : "Post liked"
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+module.exports.getPostLikes = async (req, res, next) => {
+    try {
+        const post = await Post.findById(req.params.id)
+            .populate("likes", "username"); // ← replace ObjectIds with usernames
+
+        if (!post) return res.status(404).json({ error: "Post not found" });
+
+        res.json({
+            likesCount: post.likes.length,
+            likedBy:    post.likes
+        });
+    } catch (err) {
         next(err);
     }
 };

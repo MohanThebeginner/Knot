@@ -18,6 +18,7 @@ router.put("/:id",isLoggedIn,upload.single("image"),postCtrl.editPost);
 
 router.delete("/:id",isLoggedIn,postCtrl.deletePost);
 
-
+router.post("/:id/like",  isLoggedIn, postCtrl.toggleLike);    
+router.get("/:id/likes",  isLoggedIn, postCtrl.getPostLikes);
 
 module.exports=router;

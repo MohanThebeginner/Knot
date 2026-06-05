@@ -18,6 +18,14 @@ const {limiter,authLimiter} = require("./middleware/rateLimiter");
 
 app.use(express.json());
 
+//cors
+const cors = require('cors')
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
+
 // Multer error handling middleware
 app.use((err, req, res, next) => {
     if (err instanceof multer.MulterError) {

@@ -9,7 +9,11 @@ const userSchema = new Schema({
         type:String,
         required:true,
         unique:true
-    }
+    },
+    isVerified:        { type: Boolean, default: false },
+    verificationToken: { type: String },
+    resetToken:        { type: String },
+    resetTokenExpiry:  { type: Date }
 },{timestamps:true});
 
 //hashing
