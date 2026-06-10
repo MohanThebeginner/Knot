@@ -1,7 +1,12 @@
+const Groq = require("groq-sdk");
+
 const Post = require("../models/post.js");
 const Comment = require("../models/comments.js");
 
 const {validationResult} = require("express-validator");
+
+const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
+
 
 //GET comment
 module.exports.readComment = async(req,res,next) => {
@@ -28,6 +33,20 @@ module.exports.createComment = async (req,res,next) => {
     try{
         const post = await Post.findById(req.params.id);
         if (!post) return res.status(404).json({error:"Post not found"});
+
+        const moderation = await client.chat.completions.create({
+            model:      "llama-3.3-70b-versatile", 
+            max_tokens: 10,
+            messages: [{
+                role:    "user",
+                content: `Is this comment toxic, hateful, or spam? Reply only YES or NO:\n\n"${req.body.body}"`
+            }]
+        })
+
+        const isToxic = moderation.choices[0].message.content.trim().toUpperCase() === "YES";
+        if(isToxic){
+            return res.status(400).json({error:"Your comment was flagged as inappropriate and could not be posted."})
+        }
 
         const comment = new Comment({
             body: req.body.body,

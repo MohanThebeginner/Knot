@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 
+const cors = require('cors')
+
+
 const router = express.Router({mergeParams: true});
 
 const mongoose = require("mongoose");
@@ -19,8 +22,6 @@ const {limiter,authLimiter} = require("./middleware/rateLimiter");
 app.use(express.json());
 
 //cors
-const cors = require('cors')
-
 app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true
@@ -68,5 +69,5 @@ app.use((err, req, res, next) => {
 
 //port 8080
  app.listen(PORT,()=>{
-    console.log("Port listening on 8080");
+    console.log(`Port listening on ${PORT}`);
  });
