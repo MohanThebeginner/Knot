@@ -4,6 +4,7 @@ const Post = require("../models/post.js");
 const Comment = require("../models/comments.js");
 
 const {validationResult} = require("express-validator");
+const {sendNotification} = require("../utils/notify");
 
 const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -55,6 +56,18 @@ module.exports.createComment = async (req,res,next) => {
         });
 
         await comment.save();
+
+        await sendNotification(
+            req.app.get("io"),
+            req.app.get("connectedUsers"),
+            {
+                recipient: post.author,
+                sender: req.user._id,
+                type: "comment",
+                post: post._id
+            }
+        );
+
         res.status(201).json(comment);
 
     }catch (err){

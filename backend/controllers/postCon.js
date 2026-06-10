@@ -2,7 +2,7 @@ const Post = require("../models/post.js");
 const Comment = require("../models/comments.js");
 const {cloudinary} = require("../config/cloudinary.js") 
 const {validationResult} = require("express-validator");
-
+const {sendNotification} = require("../utils/notify");
 
 
 //read(GET)
@@ -135,7 +135,21 @@ module.exports.toggleLike = async (req, res, next) => {
             post.likes.pull(req.user._id); // unlike
         } else {
             post.likes.push(req.user._id); // like
+
+            await sendNotification(
+                req.app.get("io"),
+                req.app.get("connectedUsers"),
+                {
+                    recipient:post.author,
+                    sender: req.user._id,
+                    type: "like",
+                    post: post._id
+                }
+            );
         }
+
+
+
 
         await post.save();
         res.json({ 

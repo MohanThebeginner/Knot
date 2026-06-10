@@ -1,26 +1,43 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTheme } from '@/hooks/useTheme'
+import { NotificationBell } from '@/components/shared/NotificationBell'
+import { Modal } from '@/components/ui/Modal'
+import { NotificationCenter } from '@/components/shared/NotificationCenter'
 
 export function Navbar() {
   const { isDark, toggleTheme } = useTheme()
+  const [showNotifications, setShowNotifications] = useState(false)
 
   return (
-    <header className="md:hidden sticky top-0 z-20 bg-bg border-b border-border flex items-center justify-between px-4 h-12">
-      <Link
-        to="/"
-        className="flex items-center"
-      >
-        <img src={isDark ? '/brandD.png' : '/brand.png'} alt="Logo" className="h-8 w-auto" />
-      </Link>
+    <>
+      <header className="md:hidden sticky top-0 z-20 bg-bg border-b border-border flex items-center justify-between px-4 h-12">
+        <Link
+          to="/"
+          className="flex items-center"
+        >
+          <img src={isDark ? '/brandD.png' : '/brand.png'} alt="Logo" className="h-8 w-auto" />
+        </Link>
 
-      <button
-        onClick={toggleTheme}
-        aria-label="Toggle theme"
-        className="p-2 rounded text-text-secondary hover:text-text-primary hover:bg-surface-2 transition-colors"
-      >
-        {isDark ? <SunIcon /> : <MoonIcon />}
-      </button>
-    </header>
+        <div className="flex items-center gap-2">
+          <NotificationBell onClick={() => setShowNotifications(true)} />
+
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            className="p-2 rounded text-text-secondary hover:text-text-primary hover:bg-surface-2 transition-colors"
+          >
+            {isDark ? <SunIcon /> : <MoonIcon />}
+          </button>
+        </div>
+      </header>
+
+      <Modal isOpen={showNotifications} onClose={() => setShowNotifications(false)}>
+        <div className="h-96 max-h-96 w-full max-w-md">
+          <NotificationCenter onClose={() => setShowNotifications(false)} />
+        </div>
+      </Modal>
+    </>
   )
 }
 

@@ -1,8 +1,20 @@
 const express = require('express');
 const app = express();
 
-const cors = require('cors')
+const http = require("http");
+const { Server } = require("socket.io");
+const server = http.createServer(app);
+const io = new Server(server,{
+    cors:{
+        origin: [
+            process.env.CLIENT_URL,
+            'http://localhost:5173',  // Development frontend
+        ],
+        credentials: true
+    }
+});
 
+const cors = require('cors')
 
 const router = express.Router({mergeParams: true});
 
@@ -16,14 +28,41 @@ const MONGO_URI =process.env.MONGO_URI;
 const userRouter = require("./routes/user.js");
 const postRouter = require("./routes/post.js");
 const commRouter = require("./routes/comment.js");
+const notifyRouter = require("./routes/notification.js");
 
 const {limiter,authLimiter} = require("./middleware/rateLimiter");
+
+//socket
+const connectedUsers = new Map();
+
+io.on("connection", (socket) => {
+    console.log("Client connected:",socket.id);
+
+    socket.on("register",(userId) => {
+        connectedUsers.set(userId, socket.id);
+        console.log(`User ${userId} online`);
+    });
+
+    socket.on("disconnect",() => {
+        for(const [userId, socketId] of connectedUsers.entries()){
+            if(socketId === socket.id){
+                connectedUsers.delete(userId);
+                console.log(`User ${userId} offline`);
+                break;
+            }
+        }
+    });
+});
+
+app.set("io",io);
+app.set("connectedUsers",connectedUsers);
+
 
 app.use(express.json());
 
 //cors
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: process.env.CLIENT_URL,
   credentials: true
 }));
 
@@ -59,6 +98,7 @@ app.get("/",(req,res)=>{
 app.use("/",userRouter);
 app.use("/posts",postRouter);
 app.use("/posts/:id/comments",commRouter);
+app.use("/notifications",notifyRouter);
 
 //Central error handler
 app.use((err, req, res, next) => {
@@ -68,6 +108,6 @@ app.use((err, req, res, next) => {
 
 
 //port 8080
- app.listen(PORT,()=>{
+ server.listen(PORT,()=>{
     console.log(`Port listening on ${PORT}`);
  });

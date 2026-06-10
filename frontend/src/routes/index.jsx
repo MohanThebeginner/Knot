@@ -17,6 +17,7 @@ const CreatePostPage  = lazy(() => import('@/pages/CreatePostPage'))
 const EditPostPage    = lazy(() => import('@/pages/EditPostPage'))
 const ProfilePage     = lazy(() => import('@/pages/ProfilePage'))
 const SettingsPage    = lazy(() => import('@/pages/SettingsPage'))
+const NotificationsPage = lazy(() => import('@/pages/NotificationsPage'))
 const NotFoundPage    = lazy(() => import('@/pages/NotFoundPage'))
 
 function Fallback() {
@@ -83,6 +84,16 @@ const router = createBrowserRouter([
               <ProtectedRoute>
                 <Suspense fallback={<Fallback />}>
                   <SettingsPage />
+                </Suspense>
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: '/notifications',
+            element: (
+              <ProtectedRoute>
+                <Suspense fallback={<Fallback />}>
+                  <NotificationsPage />
                 </Suspense>
               </ProtectedRoute>
             ),
