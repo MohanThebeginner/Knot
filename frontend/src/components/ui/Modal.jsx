@@ -49,7 +49,8 @@ export function Modal({ isOpen, onClose, title, children, className }) {
             className={cn(
               'fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50',
               'bg-surface border border-border rounded-lg shadow-xl',
-              'w-[calc(100vw-2rem)] max-w-md',
+              'w-[calc(100vw-2rem)] max-w-md md:max-w-lg',
+              'max-h-[calc(100vh-2rem)] overflow-auto',
               className
             )}
           >

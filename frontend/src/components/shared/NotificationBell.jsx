@@ -11,11 +11,11 @@ export function NotificationBell({ onClick }) {
     <button
       onClick={onClick}
       aria-label="Notifications"
-      className="relative p-2 rounded text-text-secondary hover:text-text-primary hover:bg-surface-2 transition-colors"
+      className="relative p-2 md:p-2 rounded text-text-secondary hover:text-text-primary hover:bg-surface-2 transition-colors active:bg-surface-2 min-h-10 min-w-10 flex items-center justify-center"
     >
       <svg
-        width="18"
-        height="18"
+        width="20"
+        height="20"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -26,7 +26,7 @@ export function NotificationBell({ onClick }) {
       </svg>
 
       {unreadCount > 0 && (
-        <span className="absolute top-1 right-1 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
+        <span className="absolute top-0 right-0 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
           {unreadCount > 9 ? '9+' : unreadCount}
         </span>
       )}

@@ -33,7 +33,7 @@ export function Navbar() {
       </header>
 
       <Modal isOpen={showNotifications} onClose={() => setShowNotifications(false)}>
-        <div className="h-96 max-h-96 w-full max-w-md">
+        <div className="w-full h-[60vh] max-h-96 md:max-h-[70vh] md:h-96">
           <NotificationCenter onClose={() => setShowNotifications(false)} />
         </div>
       </Modal>

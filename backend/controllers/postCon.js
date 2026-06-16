@@ -28,7 +28,7 @@ module.exports.allPosts = async(req,res,next)=>{
             isLiked: req.user && post.likes ? post.likes.includes(req.user._id) : false
         }));
 
-        const total = await Post.countDocuments();
+        const total = await Post.countDocuments(query);
 
         res.json({posts: postsWithLikes, currentPage: page , totalPage: Math.ceil(total/limit), totalPost: total });
     }catch(err){
