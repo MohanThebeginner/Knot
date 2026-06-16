@@ -26,7 +26,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "node --watch backend/server.js "
+    "dev": "node --watch backend/server.js ",
+    "start": "node backend/server.js"
   },
   "keywords": [],
   "author": "",
