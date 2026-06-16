@@ -85,6 +85,7 @@ async function main() {
   await mongoose.connect(MONGO_URI);
 }
 
+app.set("trust proxy", 1);
 //ratelimiter
 app.use(limiter);
  
