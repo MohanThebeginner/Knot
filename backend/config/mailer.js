@@ -23,10 +23,16 @@ const sendEmail = async (toEmail, subject, htmlContent) => {
         const req = https.request(options, (res) => {
             let body = "";
             res.on("data", chunk => body += chunk);
-            res.on("end", () => resolve(body));
+            res.on("end", () => {
+                console.log("Brevo response:", body); // ← add this
+                resolve(body);
+            });
         });
 
-        req.on("error", reject);
+        req.on("error", (err) => {
+            console.error("Brevo error:", err); // ← add this
+            reject(err);
+        });
         req.write(data);
         req.end();
     });
