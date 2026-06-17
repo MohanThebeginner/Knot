@@ -18,15 +18,15 @@ export function NotificationItem({ notification, onClick }) {
     <button
       onClick={onClick}
       className={cn(
-        'w-full px-3 md:px-4 py-3 md:py-4 text-left border-b border-border hover:bg-surface-2 transition-colors active:bg-surface-1',
+        'w-full min-w-0 px-3 md:px-4 py-3 md:py-4 text-left border-b border-border hover:bg-surface-2 transition-colors active:bg-surface-1',
         !read && 'bg-surface-1'
       )}
     >
-      <div className="flex items-start gap-2 md:gap-3">
+      <div className="flex min-w-0 items-start gap-2 md:gap-3">
         <span className={`text-lg md:text-xl flex-shrink-0 ${iconColor}`}>{icon}</span>
 
         <div className="flex-1 min-w-0">
-          <p className="text-xs md:text-sm text-text-primary line-clamp-2">{message}</p>
+          <p className="text-xs md:text-sm text-text-primary line-clamp-2 break-words">{message}</p>
           <p className="text-xs text-text-secondary mt-1">{formatDate(createdAt)}</p>
         </div>
 

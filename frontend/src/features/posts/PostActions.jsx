@@ -50,19 +50,20 @@ export function PostActions({ post, onDeleted }) {
         onClose={() => setShowModal(false)}
         title="Delete post"
       >
-        <p className="text-sm text-text-secondary mb-1">
+        <p className="text-sm text-text-secondary mb-1 break-words">
           Are you sure you want to delete{' '}
           <span className="font-medium text-text-primary">"{post.title}"</span>?
         </p>
         <p className="text-xs text-text-secondary mb-6">
           This action cannot be undone. All comments will also be deleted.
         </p>
-        <div className="flex gap-3 justify-end">
+        <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3">
           <Button
             variant="secondary"
             size="sm"
             onClick={() => setShowModal(false)}
             disabled={loading}
+            className="w-full sm:w-auto"
           >
             Cancel
           </Button>
@@ -71,6 +72,7 @@ export function PostActions({ post, onDeleted }) {
             size="sm"
             onClick={handleDelete}
             loading={loading}
+            className="w-full sm:w-auto"
           >
             Delete post
           </Button>

@@ -59,7 +59,7 @@ export function LoginForm() {
           Welcome back
         </h1>
         <p className="text-sm text-text-secondary">
-          Sign in to continue to Pillar
+          Sign in to continue to Knots
         </p>
       </div>
 

@@ -83,7 +83,7 @@ export function RegisterForm() {
           Create an account
         </h1>
         <p className="text-sm text-text-secondary">
-          Join Pillar and start the conversation
+          Join Knots and start the conversation
         </p>
       </div>
 

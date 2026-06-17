@@ -32,8 +32,13 @@ export function Navbar() {
         </div>
       </header>
 
-      <Modal isOpen={showNotifications} onClose={() => setShowNotifications(false)}>
-        <div className="w-full h-[60vh] max-h-96 md:max-h-[70vh] md:h-96">
+      <Modal
+        isOpen={showNotifications}
+        onClose={() => setShowNotifications(false)}
+        widthClassName="max-w-[calc(100vw-1.5rem)] sm:max-w-md"
+        bodyClassName="p-0"
+      >
+        <div className="w-full min-w-0 h-[70dvh] max-h-[28rem] overflow-hidden sm:h-96">
           <NotificationCenter onClose={() => setShowNotifications(false)} />
         </div>
       </Modal>

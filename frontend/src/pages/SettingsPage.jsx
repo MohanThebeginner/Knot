@@ -109,11 +109,12 @@ export default function SettingsPage() {
         <p className="text-sm text-text-secondary mb-6">
           Are you sure you want to log out of your account?
         </p>
-        <div className="flex gap-3 justify-end">
+        <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3">
           <Button
             variant="secondary"
             size="sm"
             onClick={() => setShowLogoutModal(false)}
+            className="w-full sm:w-auto"
           >
             Cancel
           </Button>
@@ -121,6 +122,7 @@ export default function SettingsPage() {
             variant="danger"
             size="sm"
             onClick={handleLogout}
+            className="w-full sm:w-auto"
           >
             Log out
           </Button>

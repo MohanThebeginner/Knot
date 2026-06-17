@@ -19,14 +19,14 @@ export function NotificationCenter({ onClose }) {
   }
 
   return (
-    <div className="flex flex-col h-full bg-bg">
+    <div className="flex min-w-0 flex-col h-full overflow-hidden bg-bg">
       {/* Header */}
-      <div className="flex items-center justify-between px-3 md:px-4 py-3 md:py-4 border-b border-border sticky top-0 bg-bg">
-        <h2 className="text-base md:text-lg font-semibold">Notifications</h2>
+      <div className="flex min-w-0 items-center justify-between gap-2 px-3 md:px-4 py-3 md:py-4 border-b border-border sticky top-0 bg-bg">
+        <h2 className="min-w-0 truncate text-base md:text-lg font-semibold">Notifications</h2>
         {notifications.length > 0 && (
           <button
             onClick={handleMarkAsRead}
-            className="text-sm text-blue-500 hover:text-blue-600 transition-colors"
+            className="shrink-0 whitespace-nowrap text-xs sm:text-sm text-blue-500 hover:text-blue-600 transition-colors"
           >
             Mark all as read
           </button>
@@ -34,7 +34,7 @@ export function NotificationCenter({ onClose }) {
       </div>
 
       {/* Notifications List */}
-      <div className="flex-1 overflow-y-auto scrollbar-thin">
+      <div className="min-h-0 flex-1 overflow-y-auto scrollbar-thin">
         {notifications.length > 0 ? (
           notifications.map((notification) => (
             <NotificationItem
