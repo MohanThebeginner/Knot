@@ -1,41 +1,38 @@
-const nodemailer = require("nodemailer");
+const Brevo = require("@getbrevo/brevo");
 
-const transporter = nodemailer.createTransport({
-    host:   "smtp-relay.brevo.com",
-    port:   587,
-    secure: false,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
-});
-module.exports.sendVerificationEmail = async(toEmail, token)=> {
+const client = Brevo.ApiClient.instance;
+client.authentications["api-key"].apiKey = process.env.BREVO_API_KEY;
+
+const transactionalApi = new Brevo.TransactionalEmailsApi();
+
+module.exports.sendVerificationEmail = async (toEmail, token) => {
     const link = `${process.env.CLIENT_URL}/verify?token=${token}`;
-    await transporter.sendMail({
-        from: `"Knots" <${process.env.EMAIL_USER}>`,
-        to: toEmail,
+
+    await transactionalApi.sendTransacEmail({
+        sender:  { email: process.env.EMAIL_USER, name: "Knots" },
+        to:      [{ email: toEmail }],
         subject: "Verify your email",
-        html: `
-            <h2>Welcome!</h2>
-            <p>Click the link below to verify your email:</p>
+        htmlContent: `
+            <h2>Welcome to Knots!</h2>
+            <p>Click below to verify your email:</p>
             <a href="${link}">${link}</a>
-            <p>This link expires in 24 hours.</p>`
+            <p>Link expires in 24 hours.</p>
+        `
     });
 };
 
 module.exports.sendPasswordResetEmail = async (toEmail, token) => {
     const link = `${process.env.CLIENT_URL}/reset-password?token=${token}`;
-    await transporter.sendMail({
-        from:    `"Knots" <${process.env.EMAIL_USER}>`,
-        to:      toEmail,
+
+    await transactionalApi.sendTransacEmail({
+        sender:  { email: process.env.EMAIL_USER, name: "Knots" },
+        to:      [{ email: toEmail }],
         subject: "Reset your password",
-        html: `
+        htmlContent: `
             <h2>Password Reset</h2>
-            <p>Click the link below to reset your password:</p>
+            <p>Click below to reset your password:</p>
             <a href="${link}">${link}</a>
-            <p>This link expires in 1 hour.</p>
-            <p>If you didn't request this, ignore this email.</p>
+            <p>Link expires in 1 hour.</p>
         `
     });
 };
-
