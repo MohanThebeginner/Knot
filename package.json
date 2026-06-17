@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@getbrevo/brevo": "^5.0.4",
     "axios": "^1.13.6",
     "bcrypt": "^6.0.0",
     "cloudinary": "^1.41.3",
