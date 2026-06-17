@@ -1,41 +1,29 @@
-const https = require("https");
+const nodemailer = require("nodemailer");
+
+const createTransporter = async () => {
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            type:         "OAuth2",
+            user:         process.env.EMAIL_USER,
+            clientId:     process.env.GMAIL_CLIENT_ID,
+            clientSecret: process.env.GMAIL_CLIENT_SECRET,
+            refreshToken: process.env.GMAIL_REFRESH_TOKEN
+        }
+    });
+    return transporter;
+};
 
 const sendEmail = async (toEmail, subject, htmlContent) => {
-    const data = JSON.stringify({
-        from:    "Knots <onboarding@resend.dev>", // free domain, no verification needed
-        to:      [toEmail],
+    const transporter = await createTransporter();
+    const result = await transporter.sendMail({
+        from:    `"Knots" <${process.env.EMAIL_USER}>`,
+        to:      toEmail,
         subject,
         html:    htmlContent
     });
-
-    return new Promise((resolve, reject) => {
-        const options = {
-            hostname: "api.resend.com",
-            path:     "/emails",
-            method:   "POST",
-            headers: {
-                "Content-Type":  "application/json",
-                "Authorization": `Bearer ${process.env.RESEND_API_KEY}`
-            }
-        };
-
-        const req = https.request(options, (res) => {
-            let body = "";
-            res.on("data", chunk => body += chunk);
-            res.on("end", () => {
-                console.log("Resend response:", body);
-                resolve(body);
-            });
-        });
-
-        req.on("error", (err) => {
-            console.error("Resend error:", err);
-            reject(err);
-        });
-
-        req.write(data);
-        req.end();
-    });
+    console.log("Email sent:", result.messageId);
+    return result;
 };
 
 module.exports.sendVerificationEmail = async (toEmail, token) => {
