@@ -1,22 +1,21 @@
-// config/mailer.js
 const https = require("https");
 
 const sendEmail = async (toEmail, subject, htmlContent) => {
     const data = JSON.stringify({
-        sender:      { email: process.env.EMAIL_USER, name: "Knots" },
-        to:          [{ email: toEmail }],
+        from:    "Knots <onboarding@resend.dev>", // free domain, no verification needed
+        to:      [toEmail],
         subject,
-        htmlContent
+        html:    htmlContent
     });
 
     return new Promise((resolve, reject) => {
         const options = {
-            hostname: "api.brevo.com",
-            path:     "/v3/smtp/email",
+            hostname: "api.resend.com",
+            path:     "/emails",
             method:   "POST",
             headers: {
                 "Content-Type":  "application/json",
-                "api-key":       process.env.BREVO_API_KEY
+                "Authorization": `Bearer ${process.env.RESEND_API_KEY}`
             }
         };
 
@@ -24,15 +23,16 @@ const sendEmail = async (toEmail, subject, htmlContent) => {
             let body = "";
             res.on("data", chunk => body += chunk);
             res.on("end", () => {
-                console.log("Brevo response:", body); // ← add this
+                console.log("Resend response:", body);
                 resolve(body);
             });
         });
 
         req.on("error", (err) => {
-            console.error("Brevo error:", err); // ← add this
+            console.error("Resend error:", err);
             reject(err);
         });
+
         req.write(data);
         req.end();
     });
