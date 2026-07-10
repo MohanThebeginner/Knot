@@ -23,14 +23,14 @@
   <img src="https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white" />
   <img src="https://img.shields.io/badge/Socket.io-4.0-010101?style=for-the-badge&logo=socket.io&logoColor=white" />
   <img src="https://img.shields.io/badge/TailwindCSS-3.0-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" />
-  <img src="https://img.shields.io/badge/Google_Gemini-AI-4285F4?style=for-the-badge&logo=google&logoColor=white" />
+  <img src="https://img.shields.io/badge/Google_OAuth-Authentication-4285F4?style=for-the-badge&logo=google&logoColor=white" />
   <img src="https://img.shields.io/badge/Live-Demo-000000?style=for-the-badge&logo=vercel&logoColor=white" />
 </p>
 
 ---
 
 <p align="center">
-  <img src="./screenshot-home.png" alt="Knots Home Feed" width="900" />
+  <img src="./screenshots/home-dark.png" alt="Knots Home Feed" width="900" />
 </p>
 
 ---
