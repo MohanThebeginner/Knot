@@ -300,8 +300,8 @@ knots/
 
 ### Clone the Repository
 ```bash
-git clone https://github.com/MohanThebeginner/knots.git
-cd knots
+git clone https://github.com/MohanThebeginner/Knot.git
+cd Knot
 ```
 
 ### Backend Setup
